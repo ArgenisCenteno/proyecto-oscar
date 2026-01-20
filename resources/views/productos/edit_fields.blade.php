@@ -150,7 +150,7 @@
                                 <select name="variantes_existentes[{{ $index }}][talla]"
                                     class="form-control @error("variantes_existentes.$index.talla") is-invalid @enderror">
 
-                                    @foreach (['XS','S','M','L','XL','XXL','XXXL'] as $t)
+                                    @foreach (['XS','S','M','L','XL','XXL','XXXL', '28', '30', "32",'34', "36"] as $t)
                                         <option value="{{ $t }}" {{ $v->talla == $t ? 'selected' : '' }}>
                                             {{ $t }}
                                         </option>
