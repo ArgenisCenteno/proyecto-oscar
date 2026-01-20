@@ -186,7 +186,7 @@
     </div>
 
     <button class="btn btn-primary">
-        {{ $direccion ? 'Actualizar Dirección' : 'Guardar Dirección' }}
+        {{ isset($direccion) ? 'Actualizar Dirección' : 'Guardar Dirección' }}
     </button>
 
 </form>
