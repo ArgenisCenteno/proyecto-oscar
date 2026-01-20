@@ -179,6 +179,11 @@
         <option value="XL">XL</option>
         <option value="XXL">XXL</option>
         <option value="XXXL">XXXL</option>
+          <option value="28">28</option>
+                        <option value="30">30</option>
+                        <option value="32">32</option>
+                        <option value="34">34</option>
+                        <option value="36">36</option>
     </select>
 </div>
 
