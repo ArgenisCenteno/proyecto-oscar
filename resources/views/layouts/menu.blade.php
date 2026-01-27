@@ -256,24 +256,20 @@
                             <span class="menu-title text-truncate" data-i18n="Reports">Reportes</span>
                         </a>
                         <ul class="menu-content">
-                            <li>
-                                <a class="d-flex align-items-center" href="#">
-                                    <i data-feather="trending-up"></i>
-                                    <span class="menu-item text-truncate" data-i18n="SalesReport">Ventas</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="d-flex align-items-center" href="#">
-                                    <i data-feather="user-check"></i>
-                                    <span class="menu-item text-truncate" data-i18n="CustomersReport">Clientes</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="d-flex align-items-center" href="#">
-                                    <i data-feather="package"></i>
-                                    <span class="menu-item text-truncate" data-i18n="ProductsReport">Productos</span>
-                                </a>
-                            </li>
+                           <li>
+    <a class="d-flex align-items-center" href="{{ route('reportes.ventas') }}">
+        <i data-feather="trending-up"></i>
+        <span class="menu-item">Ventas</span>
+    </a>
+</li>
+
+<li>
+    <a class="d-flex align-items-center" href="{{ route('reportes.clientes') }}">
+        <i data-feather="user-check"></i>
+        <span class="menu-item">Clientes</span>
+    </a>
+</li>
+
                         </ul>
                     </li>
                 @endcan

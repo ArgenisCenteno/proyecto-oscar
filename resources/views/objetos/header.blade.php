@@ -4,7 +4,8 @@
     <div class="navbar-header d-xl-block d-none">
         <ul class="nav navbar-nav">
             <li class="nav-item"><a class="navbar-brand" href="{{url('/')}}"><span class="brand-logo">
-                      <img src="{{ asset('assets/img/logo-tienda.jpg') }}" alt=""> </span>
+                   <img src="{{ asset('assets/img/logo-tienda.jpg') }}" style="max-width: 60px; width: 100%; height: auto;">
+ </span>
                     <h2 class="brand-text mb-0">{{ config('app.name') }}</h2>
                 </a></li>
         </ul>

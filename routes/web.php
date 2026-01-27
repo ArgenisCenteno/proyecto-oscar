@@ -6,6 +6,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImpersonateController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -53,5 +54,8 @@ Route::post('/perfil/direccion', [UserController::class, 'direccionStoreOrUpdate
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
+Route::prefix('reportes')->middleware(['auth'])->group(function () {
+    Route::get('/ventas', [ReporteController::class, 'ventas'])->name('reportes.ventas');
+    Route::get('/clientes', [ReporteController::class, 'clientes'])->name('reportes.clientes');
+});
 require __DIR__ . '/auth.php';

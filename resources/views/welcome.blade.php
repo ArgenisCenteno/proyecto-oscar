@@ -85,15 +85,15 @@
 
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <img src="{{ asset('app-assets/images/slider/02.jpg') }}"
+                                <img src="{{ asset('https://images.pexels.com/photos/1488470/pexels-photo-1488470.jpeg') }}"
                                     class="d-block w-100 carousel-img" alt="First slide">
                             </div>
                             <div class="carousel-item">
-                                <img src="{{ asset('app-assets/images/slider/03.jpg') }}"
+                                <img src="{{ asset('https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg') }}"
                                     class="d-block w-100 carousel-img" alt="Second slide">
                             </div>
                             <div class="carousel-item">
-                                <img src="{{ asset('app-assets/images/slider/01.jpg') }}"
+                                <img src="{{ asset('https://images.pexels.com/photos/13532891/pexels-photo-13532891.jpeg') }}"
                                     class="d-block w-100 carousel-img" alt="Third slide">
                             </div>
                         </div>
