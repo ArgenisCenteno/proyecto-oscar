@@ -21,7 +21,7 @@ class UsuariosSeeder extends Seeder
         $usuarios = [
             [
                 'name' => 'OSCAR IBARRA',
-                'email' => 'oscar.ibarra@example.com',
+                'email' => 'oscar.ibarra@gmail.com',
                 'password' => Hash::make('12345678'),
                 'rol' => 'SUPERADMIN'
             ],
