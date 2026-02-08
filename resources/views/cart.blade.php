@@ -205,7 +205,7 @@ foreach ($items as $item) {
             </div>
              <div class="price-detail " id="cart-total-dollar">
                 <strong>Total a pagar (Bs)</strong>
-                <strong>${{ number_format($total ?? 0 * $dollar ?? 0, 2) }}</strong>
+                <strong>${{ number_format($total  * $dollar, 2) }}</strong>
             </div>
 
             <a href="{{ route('checkout.index') }}" class="btn btn-primary w-100 mt-2">

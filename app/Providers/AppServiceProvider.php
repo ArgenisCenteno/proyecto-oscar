@@ -41,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
                  $dollar = 344.51;
                  
             }
-
+            
             $view->with('dollar', $dollar);
         });
     }
