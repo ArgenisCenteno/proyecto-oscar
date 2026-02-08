@@ -116,82 +116,82 @@
                 <div class="content-body">
                     <h2>Nuestros productos</h2>
 
-                    <section id="ecommerce-products" class="grid-view">
+                  <section id="ecommerce-products" class="grid-view">
 
-                        @foreach ($productos as $producto)
-                                            <a href="{{ route('shop.show', $producto->slug) }}">
-                                                <div class="card ecommerce-card">
+@foreach ($productos as $producto)
+<div class="card ecommerce-card">
 
-                                                    {{-- Imagen --}}
-                                                    <div class="item-img text-center">
-                                                        <a href="{{ route('shop.show', $producto->slug) }}">
-                                                            <img class="img-fluid card-img-top" src="{{ $producto->imagenes->first()
-                            ? asset('storage/' . $producto->imagenes->first()->imagen)
-                            : asset('app-assets/images/pages/eCommerce/placeholder.png') }}"
-                                                                alt="{{ $producto->nombre }}" />
-                                                        </a>
-                                                    </div>
+    {{-- Imagen --}}
+    <div class="item-img text-center">
+        <a href="{{ route('shop.show', $producto->slug) }}">
+            <img class="img-fluid card-img-top"
+                 src="{{ $producto->imagenes->first()
+                    ? asset('storage/' . $producto->imagenes->first()->imagen)
+                    : asset('app-assets/images/pages/eCommerce/placeholder.png') }}"
+                 alt="{{ $producto->nombre }}" />
+        </a>
+    </div>
 
-                                                    {{-- Body --}}
-                                                    <div class="card-body">
-                                                        <div class="item-wrapper">
-                                                            <div class="item-rating">
-                                                                <ul class="unstyled-list list-inline">
-                                                                    @for ($i = 1; $i <= 5; $i++)
-                                                                        <li class="ratings-list-item">
-                                                                            <i data-feather="star"
-                                                                                class="{{ $i <= 4 ? 'filled-star' : 'unfilled-star' }}"></i>
-                                                                        </li>
-                                                                    @endfor
-                                                                </ul>
-                                                            </div>
+    {{-- Body --}}
+    <div class="card-body">
+        <div class="item-wrapper">
+            <div class="item-rating">
+                <ul class="unstyled-list list-inline">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <li class="ratings-list-item">
+                            <i data-feather="star"
+                               class="{{ $i <= 4 ? 'filled-star' : 'unfilled-star' }}"></i>
+                        </li>
+                    @endfor
+                </ul>
+            </div>
 
-                                                            <div>
-                                                                <h6 class="item-price">${{ number_format($producto->precio, 2) }}</h6>
-                                                            </div>
-                                                        </div>
+            <div>
+                <h6 class="item-price">${{ number_format($producto->precio, 2) }}</h6>
+            </div>
+        </div>
 
-                                                        {{-- Nombre --}}
-                                                        <h6 class="item-name">
-                                                            <a class="text-body" href="#">
-                                                                {{ $producto->nombre }}
-                                                            </a>
-                                                            <span class="card-text item-company">
-                                                                En <a href="#" class="company-name">
-                                                                    {{ $producto->subcategoria->nombre }}
-                                                                </a>
-                                                            </span>
-                                                        </h6>
+        {{-- Nombre --}}
+        <h6 class="item-name">
+            <a class="text-body" href="{{ route('shop.show', $producto->slug) }}">
+                {{ $producto->nombre }}
+            </a>
+            <span class="card-text item-company">
+                En <a href="#" class="company-name">
+                    {{ $producto->subcategoria->nombre }}
+                </a>
+            </span>
+        </h6>
 
-                                                        {{-- Descripción --}}
-                                                        <p class="card-text item-description">
-                                                            {{ Str::limit($producto->descripcion, 150) }}
-                                                        </p>
-                                                    </div>
+        {{-- Descripción --}}
+        <p class="card-text item-description">
+            {{ Str::limit($producto->descripcion, 150) }}
+        </p>
+    </div>
 
-                                                    {{-- Opciones --}}
-                                                    <div class="item-options text-center">
-                                                        <div class="item-wrapper">
-                                                            <div class="item-cost">
-                                                                <h4 class="item-price">${{ number_format($producto->precio, 2) }}</h4>
-                                                            </div>
-                                                        </div>
+    {{-- Opciones --}}
+    <div class="item-options text-center">
+        <div class="item-wrapper">
+            <div class="item-cost">
+                <h4 class="item-price">${{ number_format($producto->precio, 2) }}</h4>
+            </div>
+        </div>
 
-                                                        <a href="#" class="btn btn-light btn-wishlist">
-                                                           
-                                                            <span></span>
-                                                        </a>
+        <a href="#" class="btn btn-light btn-wishlist">
+            <span></span>
+        </a>
 
-                                                        <a href="{{route('shop.show', $producto->slug)}}" class="btn btn-primary btn-cart">
-                                                            <i data-feather="shopping-cart"></i>
-                                                            <span class="add-to-cart2">Ver detalles</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </a>
-                        @endforeach
+        <a href="{{ route('shop.show', $producto->slug) }}" class="btn btn-primary btn-cart">
+            <i data-feather="shopping-cart"></i>
+            <span class="add-to-cart2">Ver detalles</span>
+        </a>
+    </div>
 
-                    </section>
+</div>
+@endforeach
+
+</section>
+
 
 
                     <div class="d-flex justify-content-center align-items-center mt-4 mb-4">
