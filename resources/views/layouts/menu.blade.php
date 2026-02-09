@@ -287,7 +287,7 @@
                <li class="nav-item {{ Request::is('ventas*') ? 'active' : '' }}">
     <a class="d-flex align-items-center" href="{{ route('ventas.index') }}">
         <i data-feather="shopping-bag"></i>
-        <span class="menu-title text-truncate" data-i18n="Ventas">Ventas</span>
+        <span class="menu-title text-truncate" data-i18n="Ventas">Compras</span>
     </a>
 </li>
 

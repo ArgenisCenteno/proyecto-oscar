@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BcvRate;
 use App\Models\Pago;
+use App\Models\Promocion;
 use Illuminate\Http\Request;
 use App\Models\Venta;
 use App\Models\DetalleVenta;
@@ -17,38 +18,38 @@ use Yajra\DataTables\DataTables;
 class VentaController extends Controller
 {
 
-  public function index(Request $request)
-{
-    if ($request->ajax()) {
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
 
 
-       if(Auth::user()->hasRole('CLIENTE')){
-            $data = Venta::where('user_id', auth()->user()->id)->select('ventas.*');
-        } else {
-            $data = Venta::with('user')->select('ventas.*');
+            if (Auth::user()->hasRole('CLIENTE')) {
+                $data = Venta::where('user_id', auth()->user()->id)->select('ventas.*');
+            } else {
+                $data = Venta::with('user')->select('ventas.*');
+            }
+
+            return DataTables::of($data)
+
+                ->addColumn('entregado', function ($row) {
+                    return $row->entregado ? 'Sí' : 'No';
+                })
+                ->editColumn('subtotal', function ($row) {
+                    return number_format($row->subtotal, 2, ',', '.');
+                })
+                ->editColumn('descuento', function ($row) {
+                    return number_format($row->descuento, 2, ',', '.');
+                })
+                ->editColumn('total', function ($row) {
+                    return number_format($row->total, 2, ',', '.');
+                })
+                ->addColumn('actions', 'ventas.actions') // aquí puedes tener botones editar, ver, etc
+                ->rawColumns(['actions'])
+                ->make(true);
         }
 
-        return DataTables::of($data)
-            
-            ->addColumn('entregado', function($row) {
-                return $row->entregado ? 'Sí' : 'No';
-            })
-            ->editColumn('subtotal', function($row) {
-                return number_format($row->subtotal, 2, ',', '.');
-            })
-             ->editColumn('descuento', function($row) {
-                return number_format($row->descuento, 2, ',', '.');
-            })
-             ->editColumn('total', function($row) {
-                return number_format($row->total, 2, ',', '.');
-            })
-            ->addColumn('actions', 'ventas.actions') // aquí puedes tener botones editar, ver, etc
-            ->rawColumns(['actions'])
-            ->make(true);
+        return view('ventas.index');
     }
-
-    return view('ventas.index');
-}
 
 
     public function store(Request $request)
@@ -64,13 +65,16 @@ class VentaController extends Controller
 
         $user = auth()->user();
         $existePago = Pago::where('referencia', $request->referencia)->where('origen', $request->origen)->first();
-       // dd($existePago);
+        // dd($existePago);
         if ($existePago) {
             Alert::error('¡Error!', 'Existe un pago con esa referencia')
                 ->showConfirmButton('Aceptar', 'rgba(79, 59, 228, 1)');
             return redirect()->back()->with('error', 'Ya existe un pago con esa referencia y origen.');
         }
-
+        $promocion = Promocion::where('activo', 1)
+            ->where('fecha_inicio', '<=', now())
+            ->where('fecha_fin', '>=', now())
+            ->first();
         // Obtener carrito
         $cartItems = $user
             ? CartItem::with(['producto', 'variante'])->where('user_id', $user->id)->get()
@@ -98,7 +102,7 @@ class VentaController extends Controller
 
             $subtotal = 0;
             $totalItems = 0;
-
+            $totalPromo = 0;
             // Crear detalles de venta
             foreach ($cartItems as $item) {
                 if ($user) {
@@ -134,14 +138,25 @@ class VentaController extends Controller
                     $producto->decrement('stock', $cantidad);
                 }
 
+                if ($promocion->aplicaAProducto($producto)) {
+                    $totalPromo += $item->precio * $item->cantidad;
+                }
+
                 $subtotal += $precio * $cantidad;
                 $totalItems += $cantidad;
             }
-
+            if($promocion){
+   $descuento = $totalPromo - $promocion->aplicar($totalPromo);
+    $total = $subtotal - $descuento;
+            }else{
+                $descuento = 0;
+                $total = $subtotal;
+            }
+         
             // Actualizar totales de venta
             $venta->subtotal = $subtotal;
-            $venta->total = $subtotal - $venta->descuento;
-            $venta->total_bs = $venta->total * $venta->tasa;
+            $venta->total = $subtotal - $descuento;
+            $venta->total_bs = $total * $venta->tasa;
             $venta->save();
 
             // Crear registro de pago
@@ -186,43 +201,43 @@ class VentaController extends Controller
             return redirect()->back()->with('error', 'Error al procesar la venta: ' . $e->getMessage());
         }
     }
-public function edit($id)
-{
-    $venta = Venta::with(['detalles.producto', 'detalles.variante', 'pagos', 'user'])
-        ->findOrFail($id);
+    public function edit($id)
+    {
+        $venta = Venta::with(['detalles.producto', 'detalles.variante', 'pagos', 'user'])
+            ->findOrFail($id);
 
-    return view('ventas.edit', compact('venta'));
-}
-public function update(Request $request, $id)
-{
-    $request->validate([
-        'estado' => 'required|in:Pagado,No Pagado,Cancelado,En Revisión',
-        'entregado' => 'required|boolean'
-    ]);
-
-    $venta = Venta::findOrFail($id);
-
-    // Actualizar venta
-    $venta->estado = $request->estado;
-    $venta->entregado = $request->entregado;
-    $venta->save();
-
-    // Actualizar todos los pagos asociados al mismo estado
-    if($venta->estado == 'Cancelado'){
- $venta->pagos()->update([
-        'estado' => 'Anulado'
-    ]);
-    }else{
-         $venta->pagos()->update([
-        'estado' => $request->estado
-    ]);
+        return view('ventas.edit', compact('venta'));
     }
-   
- Alert::success('¡Éxito!', 'Venta y pagos actualizados correctamente.')
-                ->showConfirmButton('Aceptar', 'rgba(79, 59, 228, 1)');
-    return redirect()->route('ventas.index')
-        ->with('success', 'Venta y pagos actualizados correctamente.');
-}
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'estado' => 'required|in:Pagado,No Pagado,Cancelado,En Revisión',
+            'entregado' => 'required|boolean'
+        ]);
+
+        $venta = Venta::findOrFail($id);
+
+        // Actualizar venta
+        $venta->estado = $request->estado;
+        $venta->entregado = $request->entregado;
+        $venta->save();
+
+        // Actualizar todos los pagos asociados al mismo estado
+        if ($venta->estado == 'Cancelado') {
+            $venta->pagos()->update([
+                'estado' => 'Anulado'
+            ]);
+        } else {
+            $venta->pagos()->update([
+                'estado' => $request->estado
+            ]);
+        }
+
+        Alert::success('¡Éxito!', 'Venta y pagos actualizados correctamente.')
+            ->showConfirmButton('Aceptar', 'rgba(79, 59, 228, 1)');
+        return redirect()->route('ventas.index')
+            ->with('success', 'Venta y pagos actualizados correctamente.');
+    }
 
 
 }

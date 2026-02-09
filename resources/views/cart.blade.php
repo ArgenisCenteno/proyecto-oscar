@@ -227,8 +227,11 @@ $totalFinal = $total - $descuento;
 @endif
              <div class="price-detail " id="cart-total-dollar">
                 <strong>Total a pagar (Bs)</strong>
+                @php  
                 
-                <strong>${{ number_format($totalFinal ?? $total  * $dollar, 2) }}</strong>
+                    $final = $totalFinal ?? 0;
+                 @endphp
+                <strong>${{ number_format($final  * $dollar, 2) }}</strong>
             </div>
 
             <a href="{{ route('checkout.index') }}" class="btn btn-primary w-100 mt-2">
