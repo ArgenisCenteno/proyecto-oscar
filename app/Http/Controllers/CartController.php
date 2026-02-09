@@ -6,6 +6,7 @@ use App\Models\CartItem;
 use App\Models\Categoria;
 use App\Models\Producto;
 use App\Models\ProductoVariante;
+use App\Models\Promocion;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -21,7 +22,10 @@ class CartController extends Controller
             $items = session()->get('cart', []);
         }
         $categorias = Categoria::all();
-        
+           $promocion = Promocion::where('activo', 1)
+        ->where('fecha_inicio', '<=', now())
+        ->where('fecha_fin', '>=', now())
+        ->first();
         return view('cart', compact('items', 'categorias'));
     }
 

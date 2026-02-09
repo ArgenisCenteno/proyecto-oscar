@@ -130,6 +130,20 @@ foreach ($items as $item) {
         ? $item->precio * $item->cantidad
         : $item['precio'] * $item['cantidad'];
 }
+
+$totalPromo = 0;
+
+foreach ($items as $item) {
+    $producto = auth()->check() ? $item->producto : $item['producto'];
+
+    if ($promocion->aplicaAProducto($producto)) {
+        $totalPromo += $item->precio * $item->cantidad;
+    }
+}
+
+$descuento = $totalPromo - $promocion->aplicar($totalPromo);
+$totalFinal = $total - $descuento;
+
 @endphp
 @php
     $key = auth()->check()

@@ -63,4 +63,18 @@ class Promocion extends Model
 
         return $total;
     }
+
+    public function aplicaAProducto($producto)
+{
+    if ($this->categoria_id && $producto->subcategoria->categoria_id != $this->categoria_id) {
+        return false;
+    }
+
+    if ($this->subcategoria_id && $producto->subcategoria_id != $this->subcategoria_id) {
+        return false;
+    }
+
+    return true;
+}
+
 }
