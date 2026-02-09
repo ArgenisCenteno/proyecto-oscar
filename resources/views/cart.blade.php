@@ -134,14 +134,32 @@ foreach ($items as $item) {
 $totalPromo = 0;
 
 foreach ($items as $item) {
-    $producto = auth()->check() ? $item->producto : $item['producto'];
 
-    if ($promocion->aplicaAProducto($producto)) {
-        $totalPromo += $item->precio * $item->cantidad;
+    if (auth()->check()) {
+        $producto = $item->producto; // relación Eloquent
+        $precio = $item->precio;
+        $cantidad = $item->cantidad;
+    } else {
+        // carrito en sesión
+        $producto = \App\Models\Producto::find($item['producto_id']);
+        $precio = $item['precio'];
+        $cantidad = $item['cantidad'];
     }
+
+    if($promocion){
+    if ($producto && $promocion->aplicaAProducto($producto)) {
+        $totalPromo += $precio * $cantidad;
+    }
+    }
+    
 }
 
+
+if($promocion){
 $descuento = $totalPromo - $promocion->aplicar($totalPromo);
+}else{
+$descuento = 0;
+}
 $totalFinal = $total - $descuento;
 
 @endphp
