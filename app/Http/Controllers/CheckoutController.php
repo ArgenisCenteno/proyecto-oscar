@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BcvRate;
 use App\Models\Categoria;
+use App\Models\Promocion;
 use Illuminate\Http\Request;
 use App\Models\Direccion;
 use App\Models\CartItem;
