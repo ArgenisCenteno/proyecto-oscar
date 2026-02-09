@@ -208,9 +208,16 @@ public function update(Request $request, $id)
     $venta->save();
 
     // Actualizar todos los pagos asociados al mismo estado
-    $venta->pagos()->update([
+    if($venta->estado == 'Cancelado'){
+ $venta->pagos()->update([
+        'estado' => 'Anulado'
+    ]);
+    }else{
+         $venta->pagos()->update([
         'estado' => $request->estado
     ]);
+    }
+   
  Alert::success('¡Éxito!', 'Venta y pagos actualizados correctamente.')
                 ->showConfirmButton('Aceptar', 'rgba(79, 59, 228, 1)');
     return redirect()->route('ventas.index')
