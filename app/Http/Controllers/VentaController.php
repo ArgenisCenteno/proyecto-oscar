@@ -24,7 +24,7 @@ class VentaController extends Controller
 
 
             if (Auth::user()->hasRole('CLIENTE')) {
-                $data = Venta::where('user_id', auth()->user()->id)->select('ventas.*');
+                $data = Venta::with('user')->where('user_id', auth()->user()->id)->select('ventas.*');
             } else {
                 $data = Venta::with('user')->select('ventas.*');
             }
