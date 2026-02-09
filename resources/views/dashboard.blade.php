@@ -111,6 +111,7 @@
                 </div>
             </div>
             <div class="my-auto">
+                @dd($estadisticas['ultima_venta'])
                 @if($estadisticas['ultima_venta'] == 'SIN COMPRA')
                 <h4 class="fw-bolder mb-0">{{ $estadisticas['ultima_venta'] ? \Carbon\Carbon::parse($estadisticas['ultima_venta']->created_at)->format('d/m/Y') : 'N/A' }}</h4>
 
