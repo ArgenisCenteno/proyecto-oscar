@@ -36,9 +36,9 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             if (auth()->check()) {
                 $tasa = BcvRate::latest()->first();
-                $dollar = $tasa ? $tasa->precio : 344.51;
+                $dollar = $tasa ? $tasa->precio :  382.63;
             } else {
-                 $dollar = 344.51;
+                 $dollar = 382.63;
                  
             }
             
