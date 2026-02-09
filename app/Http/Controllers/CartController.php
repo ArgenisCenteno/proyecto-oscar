@@ -26,7 +26,7 @@ class CartController extends Controller
         ->where('fecha_inicio', '<=', now())
         ->where('fecha_fin', '>=', now())
         ->first();
-        return view('cart', compact('items', 'categorias'));
+        return view('cart', compact('items', 'categorias', 'promocion'));
     }
 
     // Agregar producto (ya lo tienes)
