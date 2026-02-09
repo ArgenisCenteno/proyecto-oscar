@@ -173,14 +173,14 @@
                 @endcan
 
                 <!-- Cupones -->
-                @can('view cupones')
+               {{-- @can('view cupones')
                     <li class="nav-item {{ Request::is('cupones*') ? 'active' : '' }}">
                         <a class="d-flex align-items-center" href="{{ route('cupones.index') }}">
                             <i data-feather="gift"></i>
                             <span class="menu-title text-truncate" data-i18n="Cupones">Cupones</span>
                         </a>
                     </li>
-                @endcan
+                @endcan--}}
 
                 <!-- Ventas -->
                 @canany(['view ventas', 'view pagos'])
