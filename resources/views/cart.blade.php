@@ -227,6 +227,7 @@ $totalFinal = $total - $descuento;
 @endif
              <div class="price-detail " id="cart-total-dollar">
                 <strong>Total a pagar (Bs)</strong>
+                
                 <strong>${{ number_format($totalFinal ?? $total  * $dollar, 2) }}</strong>
             </div>
 
