@@ -111,7 +111,13 @@
                 </div>
             </div>
             <div class="my-auto">
-                <h4 class="fw-bolder mb-0">{{ $estadisticas['ultima_venta'] ? \Carbon\Carbon::parse($estadisticas['ultima_venta'])->format('d/m/Y') : 'N/A' }}</h4>
+                @if($estadisticas['ultima_venta'] == 'SIN COMPRA')
+                <h4 class="fw-bolder mb-0">{{ $estadisticas['ultima_venta'] ? \Carbon\Carbon::parse($estadisticas['ultima_venta']->created_at)->format('d/m/Y') : 'N/A' }}</h4>
+
+                @else  
+                <h4 class="fw-bolder mb-0">SIN COMPRA</h4>
+
+                @endif
                 <p class="card-text font-small-3 mb-0">Última compra</p>
             </div>
         </div>
