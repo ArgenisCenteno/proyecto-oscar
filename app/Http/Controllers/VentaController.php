@@ -157,6 +157,7 @@ class VentaController extends Controller
             $venta->subtotal = $subtotal;
             $venta->total = $subtotal - $descuento;
             $venta->total_bs = $total * $venta->tasa;
+            $venta->descuento = $descuento;
             $venta->save();
 
             // Crear registro de pago
