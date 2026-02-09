@@ -115,13 +115,13 @@
                         {{-- Total USD --}}
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Total (USD)</label>
-                            <input type="text" class="form-control" value="${{ number_format($totalUsd, 2) }}" readonly>
+                            <input type="text" class="form-control" value="${{ number_format($totalFinal, 2) }}" readonly>
                         </div>
 
                         {{-- Total Bs --}}
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Total en Bs</label>
-                            <input type="text" class="form-control" value="Bs {{ number_format($totalBs, 2) }}"
+                            <input type="text" class="form-control" value="Bs {{ number_format($totalFinalBs, 2) }}"
                                 readonly>
                         </div>
 
