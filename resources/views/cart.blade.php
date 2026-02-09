@@ -215,8 +215,14 @@ $totalFinal = $total - $descuento;
 
             <div class="price-detail " id="cart-total">
                 <strong>Total a pagar</strong>
-                <strong>${{ number_format($totalFinal ?? 0, 2) }}</strong>
+                <strong>${{ number_format($total ?? 0, 2) }}</strong>
             </div>
+@if($totalPromo > 0)
+<div class="price-detail text-success">
+    <span>Descuento ({{ $promocion->nombre ?? 'Promoción' }})</span>
+    <strong>- ${{ number_format($totalPromo, 2) }}</strong>
+</div>
+@endif
              <div class="price-detail " id="cart-total-dollar">
                 <strong>Total a pagar (Bs)</strong>
                 <strong>${{ number_format($totalFinal  * $dollar, 2) }}</strong>
