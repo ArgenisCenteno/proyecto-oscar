@@ -10,22 +10,21 @@ use App\Models\CartItem;
 
 class CheckoutController extends Controller
 {
-    public function index()
+   public function index()
 {
     $user = auth()->user();
     if (!$user) {
-        return redirect()->route('login'); // obligar a iniciar sesión
+        return redirect()->route('login');
     }
 
-    // Verificar si tiene dirección
+    // Dirección obligatoria
     $direccion = $user->direcciones()->first();
-    
     if (!$direccion) {
         return redirect()->route('direcciones.create')
             ->with('info', 'Por favor agrega tu dirección antes de continuar con la compra.');
     }
 
-    // Obtener carrito
+    // Carrito
     $cartItems = CartItem::with(['producto', 'variante'])
         ->where('user_id', $user->id)
         ->get();
@@ -35,23 +34,50 @@ class CheckoutController extends Controller
             ->with('error', 'El carrito está vacío.');
     }
 
-    // Calcular totales
-    $totalUsd = $cartItems->sum(function($item) {
-        return $item->precio * $item->cantidad;
-    });
-
+    // Subtotal USD
+    $totalUsd = $cartItems->sum(fn($item) => $item->precio * $item->cantidad);
     $totalItems = $cartItems->sum('cantidad');
+
+    // Tasa BCV
     $tasa = BcvRate::latest()->first();
-    $dollarRate = $tasa->precio ?? 270.60; // aquí colocas tu tasa dinámica
+    $dollarRate = $tasa->precio ?? 270.60;
     $totalBs = $totalUsd * $dollarRate;
+
+    // ================= PROMOCIONES =================
+    $promocion = Promocion::where('activo', 1)
+        ->where('fecha_inicio', '<=', now())
+        ->where('fecha_fin', '>=', now())
+        ->first();
+
+    $descuento = 0;
+    $totalFinal = $totalUsd;
+
+    if ($promocion && $promocion->estaActiva()) {
+        $totalConPromo = $promocion->aplicar($totalUsd);
+        $descuento = $totalUsd - $totalConPromo;
+        $totalFinal = $totalConPromo;
+    }
+
+    $totalFinalBs = $totalFinal * $dollarRate;
+    // ===============================================
 
     $categorias = Categoria::all();
 
     return view('checkout.index', compact(
-        'categorias', 'cartItems', 'direccion',
-        'totalUsd', 'totalBs', 'totalItems'
+        'categorias',
+        'cartItems',
+        'direccion',
+        'totalUsd',
+        'totalBs',
+        'totalItems',
+        'promocion',
+        'descuento',
+        'totalFinal',
+        'totalFinalBs',
+        'dollarRate'
     ));
 }
+
 
     
 }
