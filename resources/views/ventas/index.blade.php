@@ -14,7 +14,11 @@
              
          </div>
         <div class="card-body">
-            @include('ventas.table') 
+            @if(Auth::user()->hasRole('CLIENTE'))
+              @include('ventas.table2')
+            @else
+            @include('ventas.table')
+            @endif 
         </div>
     </div>
 @endsection
