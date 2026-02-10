@@ -64,7 +64,7 @@
                 style="background: rgba(0, 123, 255, 0.1); padding: 4px 10px; border-radius: 20px;">
                 <i class="ficon text-primary me-25" data-feather="dollar-sign" style="width: 16px; height: 16px;"></i>
                 <span class="fw-bold text-primary" style="font-size: 13px;">
-                    @dd($dollar);
+                   
                     {{ number_format($dollar, 2, ',', '.') }} Bs
                 </span>
             </div>
