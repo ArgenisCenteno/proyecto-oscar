@@ -239,7 +239,7 @@ $totalFinal = $total - $descuento;
 @if($descuento > 0)
 <div class="price-detail text-success">
     <span>Descuento ({{ $promocion->nombre ?? 'Promoción' }})</span>
-    <strong>- ${{ number_format($descuento, 2) }}</strong>
+    <strong>-{{ number_format($descuento, 2) }}</strong>
 </div>
 @endif
 @endif
